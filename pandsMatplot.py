@@ -11,13 +11,11 @@ import numpy as np
 
 covid19_csv = pd.read_csv("covid19.csv")
 #print(covid19_csv)
-
-covid19_continent = covid19_csv[['continent','location','date','total_cases','total_deaths']]
+covid19_csv1 = pd.DataFrame(covid19_csv)
+covid19_continent = covid19_csv1[['continent', 'location', 'date', 'total_cases', 'total_deaths']]
 #print(covid19_continent)
 covid19_continent = covid19_continent.set_index('continent', 'location')
-europe_covid19 = covid19_continent.loc[['Europe'], ['location','date','total_cases','total_deaths']]
+
+europe_covid19 = covid19_continent.loc[(covid19_continent['location'] == 'Italy') | (covid19_continent['location'] == 'Germany') |
+                                       (covid19_continent['location'] == 'Albania') | (covid19_continent['location'] == 'Greece')]
 #print(europe_covid19)
-
-#'Italy','Germany','Albania','Greece'
-
-
