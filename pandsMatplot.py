@@ -11,7 +11,7 @@ import matplotlib.pyplot as plt
 covid19_csv = pd.read_csv("covid19.csv")
 # print(covid19_csv)
 covid19_csv1 = pd.DataFrame(covid19_csv)
-covid19_continent = covid19_csv1[['continent', 'location', 'date', 'total_cases']]
+covid19_continent = covid19_csv1[['continent', 'location', 'date', 'total_cases', 'total_deaths']]
 # print(covid19_continent)
 
 # choose Europe continent
@@ -38,14 +38,38 @@ countries_data = {"Italy": covid19_italy, "Germany": covid19_germany, "Albania":
 colors = {"Italy": "green", "Germany": "orange", "Albania": "yellow", "Greece": "blue", "Denmark": "red",
           "France": "purple"}
 
-# Plot
-plt.figure(figsize=(12, 8))
-for country in countries_data:
-    plt.plot(countries_data[country]["date"], countries_data[country]["total_cases"], color=colors[country],
-             linewidth=2.5)
-plt.legend(colors)
-plt.ylabel('Total Cases')
-plt.xlabel('Per Month \n Countries do not always release Figer every day, which may explain some of the sharp changes '
-           'in the trendiness')
-plt.title('Coronavirues cases increasing in European Countries in recent months')
-plt.show()
+
+def totalCases():
+    plt.figure(figsize=(8, 8))
+    for country in countries_data:
+        plt.plot(countries_data[country]["date"], countries_data[country]["total_cases"], color=colors[country],
+                 linewidth=2.5)
+    plt.legend(colors)
+    plt.ylabel('Total Cases')
+    plt.xlabel('Per Month \n Countries do not always release Figer every day, which may explain some of the sharp '
+               'changes in the trendiness')
+    plt.title('Coronavirues cases increasing in European Countries in recent months')
+    plt.show()
+
+
+# plot for total deaths in eu countries
+def totalDeaths():
+    plt.figure(figsize=(8, 8))
+    for country in countries_data:
+        plt.plot(countries_data[country]["date"], countries_data[country]["total_deaths"], color=colors[country],
+                 linewidth=2.5)
+    plt.legend(colors)
+    plt.ylabel('Total deaths')
+    plt.xlabel('Per Month \n Countries do not always release Figer every day, which may explain some of the sharp '
+               'changes in the trendiness')
+    plt.title('Coronavirues cases increasing in European Countries in recent months')
+    plt.show()
+
+
+# plot for weekends total cases
+
+
+if __name__ == '__main__':
+
+    totalCases()
+    totalDeaths()
