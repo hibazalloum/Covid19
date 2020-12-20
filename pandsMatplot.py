@@ -11,7 +11,7 @@ import matplotlib.pyplot as plt
 covid19_csv = pd.read_csv("covid19.csv")
 # print(covid19_csv)
 covid19_csv1 = pd.DataFrame(covid19_csv)
-covid19_continent = covid19_csv1[['continent', 'location', 'date', 'total_cases', 'total_deaths']]
+covid19_continent = covid19_csv1[['continent', 'location', 'date', 'total_cases', 'total_deaths', 'new_cases']]
 # print(covid19_continent)
 
 # choose Europe continent
@@ -50,6 +50,7 @@ def totalCases():
                'changes in the trendiness')
     plt.title('Coronavirues cases increasing in European Countries in recent months')
     plt.show()
+    plt.savefig("covid19.png")
 
 
 # plot for total deaths in eu countries
@@ -64,12 +65,40 @@ def totalDeaths():
                'changes in the trendiness')
     plt.title('Coronavirues cases increasing in European Countries in recent months')
     plt.show()
+    plt.savefig("covid191.png")
 
 
-# plot for weekends total cases
+# weekends vs other days
 
+covid19_europe['weekend'] = (covid19_europe['date'].dt.dayofweek // 5 == 1).astype(int)
+
+# print(covid19_europe['weekend'])
+
+# choose  european countries
+covid19_italy = covid19_europe[covid19_europe['location'] == 'Italy']
+covid19_germany = covid19_europe[covid19_europe['location'] == 'Germany']
+covid19_albania = covid19_europe[covid19_europe['location'] == 'Albania']
+covid19_greece = covid19_europe[covid19_europe['location'] == 'Greece']
+covid19_denmark = covid19_europe[covid19_europe['location'] == 'Denmark']
+covid19_france = covid19_europe[covid19_europe['location'] == 'France']
+countries_data1 = {"Italy": covid19_italy, "Germany": covid19_germany, "Albania": covid19_albania,
+                   "Greece": covid19_greece, "Denmark": covid19_denmark, "France": covid19_france}
+
+# Infer whether the infections tend to increase/ decrease over the weekends
+day_of_week_infections_mean = {}
+
+for country in countries_data1:
+    cases_in_weekends = countries_data1[country]['new_cases'][countries_data1[country]['weekend'] == 1]
+    cases_in_other_days = countries_data1[country]['new_cases'][countries_data1[country]['weekend'] == 0]
+    m_weekend = cases_in_weekends.mean()
+    m_other_days = cases_in_other_days.mean()
+    day_of_week_infections_mean[country] = [m_other_days, m_weekend]
 
 if __name__ == '__main__':
-
     totalCases()
     totalDeaths()
+    print(day_of_week_infections_mean)
+    print('Summary : \n   There was a significant decrease at the WEEKENDS in the number of \n'
+          'people infected with Covid 19 disease, as is the case in the countries of Germany, Albania, Greece and Denmark, \n'
+          ' while there were increases in the number of people with Covid 19 disease at the WEEKENDS, as is the case \n'
+          ' in France and Italy ')
