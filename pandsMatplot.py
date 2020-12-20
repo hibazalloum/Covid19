@@ -1,7 +1,6 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 
-
 # convert the file from excel to csv just firstOne with pip install xlrd
 
 '''
@@ -84,21 +83,25 @@ covid19_france = covid19_europe[covid19_europe['location'] == 'France']
 countries_data1 = {"Italy": covid19_italy, "Germany": covid19_germany, "Albania": covid19_albania,
                    "Greece": covid19_greece, "Denmark": covid19_denmark, "France": covid19_france}
 
-# Infer whether the infections tend to increase/ decrease over the weekends
-day_of_week_infections_mean = {}
 
-for country in countries_data1:
-    cases_in_weekends = countries_data1[country]['new_cases'][countries_data1[country]['weekend'] == 1]
-    cases_in_other_days = countries_data1[country]['new_cases'][countries_data1[country]['weekend'] == 0]
-    m_weekend = cases_in_weekends.mean()
-    m_other_days = cases_in_other_days.mean()
-    day_of_week_infections_mean[country] = [m_other_days, m_weekend]
+# Infer whether the infections tend to increase/ decrease over the weekends
+def weekends():
+    day_of_week_infections_mean = {}
+
+    for country in countries_data1:
+        cases_in_weekends = countries_data1[country]['new_cases'][countries_data1[country]['weekend'] == 1]
+        cases_in_other_days = countries_data1[country]['new_cases'][countries_data1[country]['weekend'] == 0]
+        m_weekend = cases_in_weekends.mean()
+        m_other_days = cases_in_other_days.mean()
+        day_of_week_infections_mean[country] = [m_other_days, m_weekend]
+    return day_of_week_infections_mean
+
 
 if __name__ == '__main__':
     totalCases()
     totalDeaths()
-    print(day_of_week_infections_mean)
+    print(weekends())
     print('Summary : \n   There was a significant decrease at the WEEKENDS in the number of \n'
-          'people infected with Covid 19 disease, as is the case in the countries of Germany, Albania, Greece and Denmark, \n'
-          ' while there were increases in the number of people with Covid 19 disease at the WEEKENDS, as is the case \n'
-          ' in France and Italy ')
+          'people infected with Covid 19 disease, as is the case in the countries of Germany, Albania, Greece and '
+          'Denmark, \n  while there were increases in the number of people with Covid 19 disease at the WEEKENDS, '
+          'as is the case \n  in France and Italy ')
